@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware.js");
 
 require("dotenv").config();
