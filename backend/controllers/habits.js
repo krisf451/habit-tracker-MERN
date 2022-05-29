@@ -25,11 +25,21 @@ const createHabit = asyncHandler(async (req, res) => {
 });
 
 const updateHabit = asyncHandler(async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    throw new Error(`No workout with ID ${req.params.id} found`);
+  const { id: _id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    throw new Error(`No workout with ID ${_id} found`);
   }
 
-  res.json({ message: `Update Habit ${req.params.id}` });
+  const habit = req.body;
+
+  const updatedHabit = await Habits.findByIdAndUpdate(
+    _id,
+    { ...habit, _id },
+    {
+      new: true,
+    }
+  );
+  res.json(updatedHabit);
 });
 const deleteHabit = asyncHandler(async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
