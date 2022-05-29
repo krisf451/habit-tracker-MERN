@@ -8,11 +8,14 @@ const getAllHabits = asyncHandler(async (req, res) => {
 });
 
 const createHabit = asyncHandler(async (req, res) => {
-  if (!req.body.name) {
-    res.status(400);
-    throw new Error("Please Add Text Field");
-  }
   const { name, type, description, frequency, duration } = req.body;
+
+  if (!name || !type || !description || !frequency || !duration) {
+    res.status(400);
+    throw new Error(
+      "Please Add Name, Type, Description, Frequency, and Durations Fields"
+    );
+  }
   const newHabit = await Habits.create({
     name,
     type,
@@ -27,7 +30,7 @@ const createHabit = asyncHandler(async (req, res) => {
 const updateHabit = asyncHandler(async (req, res) => {
   const { id: _id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(_id)) {
-    throw new Error(`No workout with ID ${_id} found`);
+    throw new Error(`No habit with ID ${_id} found`);
   }
 
   const habit = req.body;
@@ -39,11 +42,11 @@ const updateHabit = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  res.json(updatedHabit);
+  res.status(200).json(updatedHabit);
 });
 const deleteHabit = asyncHandler(async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    throw new Error(`No workout with ID ${req.params.id} found`);
+    throw new Error(`No habit with ID ${req.params.id} found`);
   }
 
   await Habits.findByIdAndRemove(req.params.id);
