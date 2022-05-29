@@ -4,10 +4,16 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
+const habitRoutes = require("./routes/habits.js");
+
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+
 const PORT = process.env.PORT || 9000;
 
-app.use(cors());
+app.use("/api/habits", habitRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Sanity Check Passed" });
