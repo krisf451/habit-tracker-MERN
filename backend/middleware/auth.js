@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
+const User = require("../models/user.js");
 
 const auth = asyncHandler(async (req, res, next) => {
   if (
@@ -11,7 +12,7 @@ const auth = asyncHandler(async (req, res, next) => {
 
     if (token) {
       decodedData = jwt.verify(token, process.env.JWT_SECRET);
-      req.userId = decodedData?.id;
+      req.user = await User.findById(decodedData?.id).select("-password");
     } else {
       throw new Error("Invalid token or no token present on headers");
     }
