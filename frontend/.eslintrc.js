@@ -1,4 +1,3 @@
-// eslintrc.js
 module.exports = {
   env: {
     browser: true,
@@ -24,7 +23,7 @@ module.exports = {
     "linebreak-style": 0,
     "react/state-in-constructor": 0,
     "import/prefer-default-export": 0,
-    "max-len": [2, 250],
+    "max-len": [2, 550],
     "no-multiple-empty-lines": [
       "error",
       {
