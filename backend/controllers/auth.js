@@ -89,4 +89,14 @@ const signup = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { signin, signup };
+const getMe = asyncHandler(async (req, res) => {
+  const { _id, name, email } = await User.findById(req.userId);
+
+  res.status(200).json({
+    id: _id,
+    name,
+    email,
+  });
+});
+
+module.exports = { signin, signup, getMe };

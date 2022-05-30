@@ -2,16 +2,25 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 
 const auth = asyncHandler(async (req, res, next) => {
-  const token = req.headers?.authorization?.split(" ")[1];
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    const token = req.headers?.authorization?.split(" ")[1];
+    let decodedData;
 
-  let decodedData;
-
-  if (token) {
-    decodedData = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decodedData?.id;
+    if (token) {
+      decodedData = jwt.verify(token, process.env.JWT_SECRET);
+      req.userId = decodedData?.id;
+    } else {
+      throw new Error("Invalid token or no token present on headers");
+    }
   } else {
-    throw new Error("Invalid token");
+    throw new Error(
+      "Error with Headers, Use format Bearer (valid JWT token) in authorization header"
+    );
   }
+
   next();
 });
 
