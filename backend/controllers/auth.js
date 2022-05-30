@@ -4,34 +4,42 @@ const asyncHandler = require("express-async-handler");
 
 const User = require("../models/user.js");
 
-const signin = async (req, res) => {
+const signin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  try {
-    const existingUser = await User.findOne({ email });
+  const existingUser = await User.findOne({ email });
 
-    if (!existingUser)
-      return res.status(404).json({ message: "User does not exist" });
-
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
-
-    if (!isPasswordCorrect)
-      return res.status(400).json({ message: "Invalid Credentials" });
-
-    const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    res.status(200).json({ result: existingUser, token });
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+  if (!existingUser) {
+    res.status(404);
+    throw new Error("User does not exist");
   }
-};
+
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    existingUser.password
+  );
+
+  if (!isPasswordCorrect) {
+    res.status(400);
+    throw new Error("Invalid Credentials, Passwords do not match");
+  }
+
+  const token = jwt.sign(
+    { email: existingUser.email, id: existingUser._id },
+    "secret",
+    { expiresIn: "8h" }
+  );
+
+  if (existingUser) {
+    res.status(200).json({
+      _id: existingUser._id,
+      email: existingUser.email,
+      token: token,
+    });
+  } else {
+    throw new Error("Something went wrong trying to sign in");
+  }
+});
 
 const signup = asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName, confirmPassword } = req.body;
