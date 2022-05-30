@@ -3,7 +3,7 @@ const Habits = require("../models/habits.js");
 const mongoose = require("mongoose");
 
 const getAllHabits = asyncHandler(async (req, res) => {
-  const habits = await Habits.find();
+  const habits = await Habits.find({ user: req.user.id });
   res.json(habits);
 });
 
@@ -17,6 +17,7 @@ const createHabit = asyncHandler(async (req, res) => {
     );
   }
   const newHabit = await Habits.create({
+    user: req.user.id,
     name,
     type,
     description,
