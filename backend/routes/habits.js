@@ -6,7 +6,9 @@ const {
   deleteHabit,
 } = require("../controllers/habits.js");
 
-router.route("/").get(getAllHabits).post(createHabit);
-router.route("/:id").put(updateHabit).delete(deleteHabit);
+const auth = require("../middleware/auth");
+
+router.route("/").get(auth, getAllHabits).post(auth, createHabit);
+router.route("/:id").put(auth, updateHabit).delete(auth, deleteHabit);
 
 module.exports = router;

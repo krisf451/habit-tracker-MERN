@@ -7,6 +7,7 @@ const { errorHandler } = require("./middleware/errorMiddleware.js");
 require("dotenv").config();
 
 const habitRoutes = require("./routes/habits.js");
+const authRoutes = require("./routes/auth.js");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 const PORT = process.env.PORT || 9000;
 
 app.use("/api/habits", habitRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "Sanity Check Passed" });
