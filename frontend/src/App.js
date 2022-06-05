@@ -5,7 +5,7 @@ import { Header } from "./components";
 
 function App() {
   return (
-    <div className="container">
+    <div className="min-h-screen w-full max-w-[960px] mx-auto px-5 text-center">
       <Header />
       <Routes>
         <Route path="/" element={<Dashboard />} />
