@@ -20,6 +20,10 @@ const Auth = () => {
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
       <section className="text-3xl font-semibold mb-12 px-5">
@@ -39,15 +43,13 @@ const Auth = () => {
         </p>
       </section>
       <section className="w-full sm:w-96 mx-auto transition-all duration-200 ease-linear">
-        <form>
+        <form onSubmit={handleSubmit}>
           {isSignup && (
             <div>
-              <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
-                Name
-              </label>
+              <label className="custom-label">Name</label>
               <input
                 type="text"
-                className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
+                className="custom-input"
                 id="name"
                 name="name"
                 value={name}
@@ -57,12 +59,10 @@ const Auth = () => {
             </div>
           )}
           <div>
-            <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
-              Email
-            </label>
+            <label className="custom-label">Email</label>
             <input
               type="email"
-              className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
+              className="custom-input"
               id="email"
               name="email"
               value={email}
@@ -71,12 +71,10 @@ const Auth = () => {
             />
           </div>
           <div className="relative">
-            <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
-              Password
-            </label>
+            <label className="custom-label">Password</label>
             <input
               type={showPassword ? "text" : "password"}
-              className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
+              className="custom-input"
               id="password"
               name="password"
               value={password}
@@ -96,12 +94,10 @@ const Auth = () => {
           </div>
           {isSignup && (
             <div>
-              <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
-                Confirm Password
-              </label>
+              <label className="custom-label">Confirm Password</label>
               <input
                 type="password"
-                className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
+                className="custom-input"
                 id="confirmPassword"
                 name="confirmPassword"
                 value={confirmPassword}
@@ -110,6 +106,9 @@ const Auth = () => {
               />
             </div>
           )}
+          <button type="submit" className="custom-btn">
+            Submit
+          </button>
         </form>
       </section>
     </>

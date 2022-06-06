@@ -4,6 +4,18 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
+@layer components {
+  .custom-btn {
+    @apply py-2 px-4 border rounded-md bg-secondary-dark-bg text-white font-extrabold cursor-pointer text-center flex items-center justify-center w-full transition-all duration-300 ease-linear hover:bg-main-dark-bg hover:scale-[98%];
+  }
+  .custom-input {
+    @apply h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2;
+  }
+  .custom-label {
+    @apply text-gray-700 text-sm font-bold mb-2 ml-1 block text-left;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +24,14 @@
 
 body {
   font-family: "Poppins", sans-serif;
+}
+
+img {
+  -webkit-backface-visibility: hidden;
+  -ms-transform: translateZ(0); /* IE 9 */
+  -webkit-transform: translateZ(0); /* Chrome, Safari, Opera */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 a {
@@ -58,40 +78,6 @@ h3 {
   cursor: pointer;
   border: none;
   background: none;
-}
-
-.btn {
-  padding: 10px 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background: #000;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  appearance: button;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn svg {
-  margin-right: 8px;
-}
-
-.btn-reverse {
-  background: #fff;
-  color: #000;
-}
-
-.btn-block {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.btn:hover {
-  transform: scale(0.98);
 }
 
 .loadingSpinnerContainer {
