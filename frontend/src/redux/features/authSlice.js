@@ -13,7 +13,18 @@ const initialState = {
 
 export const asyncRegister = createAsyncThunk(
   "auth/asyncRegister",
-  async (formValues, thunkAPI) => {}
+  async (formValues, thunkAPI) => {
+    try {
+      const { data } = await register(formValues);
+      return data;
+    } catch (e) {
+      const message =
+        (e.response && e.response.data && e.response.data.message) ||
+        e.message ||
+        e.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
 );
 export const asyncLogin = createAsyncThunk(
   "auth/asyncLogin",
@@ -48,18 +59,36 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [asyncLogin.pending]: (state) => {
-      console.log("signup pending!!");
+      console.log("login pending!!");
       state.isLoading = true;
     },
     [asyncLogin.fulfilled]: (state, action) => {
-      console.log("signup succesfully!!");
+      console.log("login succesfully!!");
       state.isLoading = false;
       state.isSuccess = true;
       localStorage.setItem("user", JSON.stringify(action.payload));
       state.user = action.payload;
     },
     [asyncLogin.rejected]: (state, action) => {
-      console.log("signup rejected!!");
+      console.log("login rejected!!");
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      state.user = null;
+    },
+    [asyncRegister.pending]: (state) => {
+      console.log("register pending!!");
+      state.isLoading = true;
+    },
+    [asyncRegister.fulfilled]: (state, action) => {
+      console.log("register succesfully!!");
+      state.isLoading = false;
+      state.isSuccess = true;
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      state.user = action.payload;
+    },
+    [asyncRegister.rejected]: (state, action) => {
+      console.log("register rejected!!");
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;

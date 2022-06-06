@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Loader } from "../components";
 import { FaUser } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { asyncLogin, reset } from "../redux/features/authSlice";
+import { asyncLogin, asyncRegister, reset } from "../redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -12,7 +12,8 @@ const Auth = () => {
     (state) => state.auth
   );
   const [formValues, setFormValues] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -21,7 +22,7 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { name, email, password, confirmPassword } = formValues;
+  const { firstName, lastName, email, password, confirmPassword } = formValues;
 
   useEffect(() => {
     if (isError) {
@@ -30,6 +31,7 @@ const Auth = () => {
     console.log("firing");
     if (isSuccess || user) {
       navigate("/");
+      clear();
     }
 
     return () => dispatch(reset());
@@ -46,20 +48,24 @@ const Auth = () => {
     e.preventDefault();
     try {
       if (isSignup) {
-        // dispatch(asyncLogin(formValues));
         if (password !== confirmPassword) toast.error("Passwords do not match");
-        console.log("sign up stuff");
+        dispatch(asyncRegister(formValues));
       } else {
         dispatch(asyncLogin(formValues));
       }
     } catch (e) {
       throw new Error(e, "something went wrong with auth");
     }
-    clear();
   };
 
   const clear = () => {
-    setFormValues({ name: "", email: "", password: "", confirmPassword: "" });
+    setFormValues({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
   };
 
   if (isLoading) return <Loader />;
@@ -85,19 +91,38 @@ const Auth = () => {
       <section className="w-full sm:w-96 mx-auto transition-all duration-200 ease-linear">
         <form onSubmit={handleSubmit}>
           {isSignup && (
-            <div>
-              <label className="custom-label">Name</label>
-              <input
-                type="text"
-                className="custom-input"
-                id="name"
-                name="name"
-                value={name}
-                autoComplete="name"
-                placeholder="Enter Your Name"
-                onChange={handleChange}
-              />
-            </div>
+            <>
+              <div>
+                <label className="custom-label" htmlFor="firstName">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  className="custom-input"
+                  id="firstName"
+                  name="firstName"
+                  value={firstName}
+                  autoComplete="firstName"
+                  placeholder="Enter Your First Name"
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="custom-label" htmlFor="lastName">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  className="custom-input"
+                  id="lastName"
+                  name="lastName"
+                  value={lastName}
+                  autoComplete="lastName"
+                  placeholder="Enter Your Last Name"
+                  onChange={handleChange}
+                />
+              </div>
+            </>
           )}
           <div>
             <label className="custom-label">Email</label>
