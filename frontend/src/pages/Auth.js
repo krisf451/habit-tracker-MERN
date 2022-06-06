@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 
 const Auth = () => {
   const [formValues, setFormValues] = useState({
@@ -9,6 +10,7 @@ const Auth = () => {
     confirmPassword: "",
   });
   const [isSignup, setIsSignup] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const { name, email, password, confirmPassword } = formValues;
 
   const handleChange = (e) => {
@@ -36,52 +38,74 @@ const Auth = () => {
             : "New to habit tracker? Register"}
         </p>
       </section>
-      <section className="form">
+      <section className="w-full sm:w-96 mx-auto transition-all duration-200 ease-linear">
         <form>
           {isSignup && (
-            <div className="form-group">
+            <div>
+              <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
+                Name
+              </label>
               <input
                 type="text"
-                className="form-control"
+                className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
                 id="name"
                 name="name"
                 value={name}
-                placeholder="John Doe"
+                placeholder="Enter Your Name"
                 onChange={handleChange}
               />
             </div>
           )}
-          <div className="form-group">
+          <div>
+            <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
+              Email
+            </label>
             <input
               type="email"
-              className="form-control"
+              className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
               id="email"
               name="email"
               value={email}
-              placeholder="johndoe@test.com"
+              placeholder="Enter Your Email"
               onChange={handleChange}
             />
           </div>
-          <div className="form-group">
+          <div className="relative">
+            <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
+              Password
+            </label>
             <input
-              type="password"
-              className="form-control"
+              type={showPassword ? "text" : "password"}
+              className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
               id="password"
               name="password"
               value={password}
-              placeholder="abc123"
+              placeholder="Enter Your Password"
               onChange={handleChange}
             />
+            <div
+              className="absolute right-5 top-10 cursor-pointer opacity-60"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <MdVisibilityOff size={25} />
+              ) : (
+                <MdVisibility size={25} />
+              )}
+            </div>
           </div>
           {isSignup && (
-            <div className="form-group">
+            <div>
+              <label className="text-gray-700 text-sm font-bold mb-2 ml-1 block text-left">
+                Confirm Password
+              </label>
               <input
                 type="password"
-                className="form-control"
+                className="h-12 shadow appearance-none border-[#e6e6e6] rounded w-full text-gray-700 mb-2 leading-tight focus:outline-none pl-2"
                 id="confirmPassword"
                 name="confirmPassword"
                 value={confirmPassword}
-                placeholder="abc123"
+                placeholder="Repeat Your Password"
                 onChange={handleChange}
               />
             </div>

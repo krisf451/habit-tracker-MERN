@@ -9,7 +9,7 @@ const Header = () => {
     console.log("clicked logout");
   };
   return (
-    <header className="flex justify-between items-center py-5 border-b-[#e6e6e6] mb-14">
+    <header className="flex justify-between items-center py-5 border-b mb-14">
       <div className="logo">
         <Link to="/">HabitTracker</Link>
       </div>
