@@ -27,7 +27,7 @@ const signin = asyncHandler(async (req, res) => {
   const token = jwt.sign(
     { email: existingUser.email, id: existingUser._id },
     process.env.JWT_SECRET,
-    { expiresIn: "8h" }
+    { expiresIn: "30d" }
   );
 
   if (existingUser) {
@@ -72,7 +72,7 @@ const signup = asyncHandler(async (req, res) => {
     { email: result.email, id: result._id },
     process.env.JWT_SECRET,
     {
-      expiresIn: "8h",
+      expiresIn: "30d",
     }
   );
 
