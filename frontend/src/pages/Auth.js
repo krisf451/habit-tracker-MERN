@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { Loader } from "../components";
 import { FaUser } from "react-icons/fa";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { asyncLogin, reset } from "../redux/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Auth = () => {
+  const { isLoading, user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
@@ -10,8 +18,22 @@ const Auth = () => {
     confirmPassword: "",
   });
   const [isSignup, setIsSignup] = useState(false);
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { name, email, password, confirmPassword } = formValues;
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    console.log("firing");
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    return () => dispatch(reset());
+  }, [isSuccess, user, dispatch, navigate, isError, message]);
 
   const handleChange = (e) => {
     setFormValues({
@@ -20,9 +42,27 @@ const Auth = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      if (isSignup) {
+        // dispatch(asyncLogin(formValues));
+        if (password !== confirmPassword) toast.error("Passwords do not match");
+        console.log("sign up stuff");
+      } else {
+        dispatch(asyncLogin(formValues));
+      }
+    } catch (e) {
+      throw new Error(e, "something went wrong with auth");
+    }
+    clear();
   };
+
+  const clear = () => {
+    setFormValues({ name: "", email: "", password: "", confirmPassword: "" });
+  };
+
+  if (isLoading) return <Loader />;
 
   return (
     <>
@@ -53,6 +93,7 @@ const Auth = () => {
                 id="name"
                 name="name"
                 value={name}
+                autoComplete="name"
                 placeholder="Enter Your Name"
                 onChange={handleChange}
               />
@@ -66,6 +107,7 @@ const Auth = () => {
               id="email"
               name="email"
               value={email}
+              autoComplete="email"
               placeholder="Enter Your Email"
               onChange={handleChange}
             />
@@ -78,6 +120,7 @@ const Auth = () => {
               id="password"
               name="password"
               value={password}
+              autoComplete="current-password"
               placeholder="Enter Your Password"
               onChange={handleChange}
             />

@@ -1,23 +1,32 @@
 import React from "react";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/features/authSlice";
 
 const Header = () => {
-  const user = false;
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("clicked logout");
+    dispatch(logout());
+    navigate("/auth");
   };
   return (
     <header className="flex justify-between items-center py-5 border-b mb-14">
-      <div className="logo">
+      <div>
         <Link to="/">HabitTracker</Link>
       </div>
       <ul className="flex items-center justify-between">
         {user ? (
           <li className="ml-5">
-            <button className="btn" onClick={handleLogout}>
-              <FaSignOutAlt /> Logout
+            <button
+              className="flex items-center justify-center"
+              onClick={handleLogout}
+              type="button"
+            >
+              <FaSignOutAlt className="mr-2" /> Logout
             </button>
           </li>
         ) : (
